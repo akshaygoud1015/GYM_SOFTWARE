@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Davinci Gymsoft</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body class="bg-dark">
+    <h1 class="text-center text-light">hello</h1>
+    <div class="login-box" >
+        <h2>Login</h2>
+        <form id="loginform">
+          <div class="user-box">
+            <input type="text" name="user" id="username" required="">
+            <label>Username</label>
+          </div>
+          <div class="user-box">
+            <input type="password" name="pass" id="password" required="">
+            <label>Password</label>
+          </div>
+          <a href="#" id="submit">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Submit
+          </a>
+        </form>
+      </div>
+
+
+
+<script>
+    document.getElementById('submit').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get the values entered by the user
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        // Your validation logic here
+        if (username === 'owner' && password === '123') {
+            // Redirect to owner page
+            window.location.href = 'owner.html';
+        } else if (username === 'trainer' && password === 'trainerpassword') {
+            // Redirect to trainer page
+            window.location.href = 'trainer.html';
+        } else {
+            // Display an error message or handle invalid login
+            alert('Invalid username or password');
+        }
+    });
+</script>
+</body>
+</html>
