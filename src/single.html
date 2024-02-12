@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title> 
+    <link rel="stylesheet" href="single.css">
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body id="mainContent">
+    <div class="container">
+        <header class="header">
+            <h1 id="title" class="text-center">Add a Client</h1>
+        </header>
+        <div class="form-wrap">	
+            <form id="survey-form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label id="name-label" for="name">Name</label>
+                            <input type="text" name="name" id="name" placeholder="Enter your name" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label id="email-label" for="email">Mobile</label>
+                            <input type="number" name="number" id="number" placeholder="Enter number" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="gender">
+                    <div class="form-check ">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                          Male
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+                        <label class="form-check-label" for="flexRadioDefault2">
+                          Female
+                        </label>
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Address</label>
+                            <textarea  id="adress" class="form-control" name="adress" placeholder="Enter Address"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label id="number-label" for="number">Age <small>(optional)</small></label>
+                            <input type="number" name="age" id="number" min="10" max="99" class="form-control" placeholder="Age" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label id="number-label" for="number">Fee <small></small></label>
+                            <input type="number" name="fee" id="fee"  class="form-control" placeholder="fee" >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Payment duration</label>
+                            <select id="dropdown" name="role" class="form-control" required>
+                                <option disabled selected value>Select</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="Quarterly">Quarterly</option>
+                                <option value="Half-yearly">Half-yearly</option>
+                                <option value="Annually">Annually</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+  
+
+                
+                <div class="row butt">
+                    <div class="col-md-4">
+                        <button type="submit" id="submit" onsubmit="handleSubmit" class="btn btn-primary btn-block">Submit</button>
+                    </div>
+                </div>
+    
+            </form>
+        </div>	
+    </div>
+
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./renderer/renderer.js"></script>
+</body>
+
+</html>
