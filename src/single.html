@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title> 
-    <link rel="stylesheet" href="single.css">
+    <link rel="stylesheet" href="./single.css">
     <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body id="mainContent">
+<body id="mainContent" class="">
     <div class="container">
         <header class="header">
             <h1 id="title" class="text-center">Add a Client</h1>
@@ -83,8 +83,12 @@
                 
                 <div class="row butt">
                     <div class="col-md-4">
-                        <button type="submit" id="submit" onsubmit="handleSubmit" class="btn btn-primary btn-block">Submit</button>
+                        <button type="submit" id="submit" class="btn btn-primary btn-block">Submit</button>
                     </div>
+                </div>
+
+                <div>
+                    <a href="owner.html"> back</a>
                 </div>
     
             </form>
@@ -93,6 +97,18 @@
 
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./renderer/renderer.js"></script>
+    <script>
+        function loadCSS(url) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = url;
+            document.head.appendChild(link);
+        }
+
+        // Load CSS file dynamically
+        loadCSS('single.css');
+    </script>
 </body>
 
 </html>
