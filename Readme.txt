@@ -19,5 +19,9 @@ CREATE TABLE clients (
     payment_duration VARCHAR(50)
 );
 
+ALTER TABLE clients
+ADD COLUMN date DATE;
+
+
 
 npx electron main.js

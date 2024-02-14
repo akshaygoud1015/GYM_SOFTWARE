@@ -9,6 +9,29 @@
 </head>
 <body id="mainContent">
     <h1>New payment</h1>
+<input type="text" id="mobileNumber" placeholder="Enter mobile number">
+<button onclick="searchUser()">Search</button>
+
+<form id="paymentForm">
+    <label>id:</label>
+    <input type="number" id="id" readonly>
+    <label>name:</label>
+    <input type="text" id="name" readonly>
+    <label>mobile:</label>
+    <input type="number" id="mobile" readonly>
+    <label>fee:</label>
+    <input type="number" id="fee" readonly>
+    
+    <label> Last Payment Date:</label>
+    <input type="date" id="paymentDate" readonly>
+    <label>New payment </label>
+    <input type="date" id="newpaymentDate" readonly>
+    
+    <button type="submit">Make Renewal</button>
+</form>
+
+
+    <a href="owner.html"> back</a>
 </body>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="./renderer/renderer.js"></script>
