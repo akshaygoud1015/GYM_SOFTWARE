@@ -7,4 +7,21 @@
 
 
 
+TABLE:|
+CREATE TABLE clients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name TEXT,
+    mobile TEXT,
+    gender TEXT,
+    address TEXT,
+    age INT,
+    fee DECIMAL(10,2),
+    payment_duration VARCHAR(50)
+);
+
+ALTER TABLE clients
+ADD COLUMN date DATE;
+
+
+
 npx electron main.js
