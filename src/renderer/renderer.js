@@ -1,6 +1,5 @@
 // Handle form submission
 
-
 document.getElementById('survey-form').addEventListener('submit', (event) => {
     event.preventDefault(); // Prevent default form submission
     // Retrieve form data
@@ -19,16 +18,10 @@ document.getElementById('survey-form').addEventListener('submit', (event) => {
     const paymentDuration = document.getElementById('dropdown').value;
     console.log(paymentDuration)
 
-    ipcRenderer.send('insert-client', { name, mobile, gender, adress, age, fee, paymentDuration });
+    api.sendInsertClient({ name, mobile, gender, adress, age, fee, paymentDuration });
 
-    
-
-    // Here, you can insert the form data into your MySQL database
-    // You can use your MySQL connection code here to perform the insertion
-
-    
-
-    // After inserting data, you can optionally clear the form fields
-    alert("submitted")
-
+    // Listen for confirmation from the main process
+    api.onDataSaved((event, response) => {
+        console.log('Response received after saving data: ', response);
+        alert("Submitted");});
 });

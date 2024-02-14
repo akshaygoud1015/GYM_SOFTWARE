@@ -11,22 +11,29 @@ const pool = mysql.createPool({
     connectionLimit: 10 // Adjust the connection limit as per your requirements
 });
 
-async function insertFormData(data) {
+ipcMain.on('insert-client', async (event, clientData) => {
     try {
+        // Replace undefined values with null
+        const data = {
+            name: clientData.name || null,
+            mobile: clientData.mobile || null,
+            gender: clientData.gender || null,
+            address: clientData.address || null,
+            age: clientData.age || null,
+            fee: clientData.fee || null,
+            paymentDuration: clientData.paymentDuration || null
+        };
+
         const connection = await pool.getConnection();
-        // Insert data into the database
         await connection.execute('INSERT INTO clients (name, mobile, gender, address, age, fee, payment_duration) VALUES (?, ?, ?, ?, ?, ?, ?)', 
             [data.name, data.mobile, data.gender, data.address, data.age, data.fee, data.paymentDuration]);
         connection.release();
         console.log('Data inserted successfully');
+        event.reply('data-saved', 'Data saved successfully');
     } catch (error) {
         console.error('Error inserting data:', error);
+        event.reply('data-saved', 'Error saving data');
     }
-}
-
-// Handle IPC event from renderer process
-ipcMain.on('insert-client', (event, clientData) => {
-    insertFormData(clientData);
 });
 
 function createWindow() {
@@ -35,11 +42,11 @@ function createWindow() {
         height: 600,
         webPreferences: {
             nodeIntegration: true,
-            preload: path.join(__dirname, 'preload.js') // Adjust the path if needed
+            preload: path.join(__dirname,'preload.js') // Adjust the path if needed
         }
     });
 
-    mainWindow.loadFile(path.join(__dirname, 'index.html'));
+    mainWindow.loadFile(path.join(__dirname,'src', 'index.html'));
 }
 
 app.whenReady().then(createWindow);
