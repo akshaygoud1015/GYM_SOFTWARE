@@ -43,7 +43,7 @@ ipcMain.on('insert-client', async (event, clientData) => {
 ipcMain.on('searchuser', async (event, { numb }) => { // Destructuring da numb from usernumb object
     try {
         const connection = await pool.getConnection();
-        const [rows, fields] = await connection.execute('SELECT * FROM Clients WHERE mobile = ?', [numb]);
+        const [rows, fields] = await connection.execute('SELECT * FROM clients WHERE mobile = ?', [numb]);
         connection.release();
 
         // Send back the search result to the renderer process
@@ -54,6 +54,50 @@ ipcMain.on('searchuser', async (event, { numb }) => { // Destructuring da numb f
     }
 });
 
+ipcMain.on('makePayment', async(event, paymentData) => {
+    const payment_type = paymentData.payType;
+    const id = paymentData.userId;
+    console.log(id);
+    console.log(payment_type);
+
+    try {
+
+        // Get a connection from the pool
+        const connection = await pool.getConnection();
+        
+        let todayDate = new Date().toISOString().split('T')[0];
+        let nextRenewalDate = new Date(); // Initialize nextRenewalDate here
+  
+        // Calculate the next renewal date based on payment type
+        if (payment_type === 'Monthly') {
+            nextRenewalDate.setMonth(nextRenewalDate.getMonth() + 1);
+        }
+        else if (payment_type === 'Quarterly') {
+            nextRenewalDate.setMonth(nextRenewalDate.getMonth() + 3);
+        }
+        else if (payment_type === 'Half-yearly') {
+            nextRenewalDate.setMonth(nextRenewalDate.getMonth() + 6);
+        }
+        else if (payment_type === 'Annually') {
+            nextRenewalDate.setFullYear(nextRenewalDate.getFullYear() + 1);
+        }
+
+        let nextRenewalFormatted = nextRenewalDate.toISOString().split('T')[0];
+  
+        // Update the payment date in the database
+        await connection.execute('UPDATE clients SET last_payment = ?, validity = ? WHERE id = ?', [todayDate, nextRenewalFormatted, id]);
+        connection.release(); // Release the connection back to the pool
+        console.log('success');
+        alert("Your renewal was successful!");
+        event.reply('paymentResult', 'Your renewal was successful!'); // Send success response
+
+    } catch(error){
+        console.error('Error:', error);
+        event.reply('paymentResult', 'Error occurred');
+    }
+});
+
+  
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
