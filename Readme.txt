@@ -22,6 +22,9 @@ CREATE TABLE clients (
 ALTER TABLE clients
 ADD COLUMN date DATE;
 
+ALTER TABLE clients
+ADD COLUMN last_payment DATE,
+ADD COLUMN validity DATE;
 
 
 npx electron main.js
