@@ -6,7 +6,7 @@ const mysql = require('mysql2/promise'); // Import mysql2/promise for async/awai
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'admin',
+    password: 'Hari@0118',
     database: 'gymclient',
     connectionLimit: 10 // Adjust the connection limit as per your requirements
 });
