@@ -13,5 +13,11 @@ contextBridge.exposeInMainWorld('api', {
     },
     onSearchResult: (callback) => { // Listen for search result from main process
         ipcRenderer.on('searchuser-result', callback);
+    },
+    makePayment: (paymentData) => {
+        ipcRenderer.send('makePayment', paymentData);
+    },
+    onRenewal: (callback) => {
+        ipcRenderer.once('paymentResult', callback);
     }
 });

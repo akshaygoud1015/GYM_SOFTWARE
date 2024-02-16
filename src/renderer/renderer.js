@@ -8,10 +8,10 @@ const day = String(today.getDate()).padStart(2, '0');
 const formattedDate = `${year}-${month}-${day}`;
 
 
-document.getElementById('survey-form').addEventListener('submit', (event) => {
-    event.preventDefault(); // Prevent default form submission
+function addClient(){
+
     // Retrieve form data
-    const name = document.getElementById('name').value;0.
+    const name = document.getElementById('name').value;
     const mobile = document.getElementById('number').value;
     const gender = document.querySelector('input[name="flexRadioDefault"]:checked').value;
     console.log(gender)
@@ -23,15 +23,14 @@ document.getElementById('survey-form').addEventListener('submit', (event) => {
   
    
 
-    api.sendInsertClient({ name, mobile, gender, adress, age, fee, paymentDuration,formattedDate });
+    api.sendInsertClient({ name, mobile, gender, adress, age, fee, paymentDuration, formattedDate});
 
     // Listen for confirmation from the main process
     api.onDataSaved((event, response) => {
-        console.log('Response received after saving data: ', response);
-       ;});
-    alert("Submitted")
-        
-});
+        console.log('Response received after saving data:', response);
+       });
+    alert("Submitted!")     
+}
 
 
 function searchUser(){
@@ -49,22 +48,33 @@ function searchUser(){
             document.getElementById('name').value = user.name;
             document.getElementById('mobile').value = user.mobile;
             document.getElementById('fee').value = user.fee;
-            document.getElementById('paymentDate').value = user.date;
+            document.getElementById('paymentType').value = user.payment_duration;
+            document.getElementById('lastPaymentDate').value = user.last_payment.toISOString().split('T')[0];
             document.getElementById('newpaymentDate').value = formattedDate;
 
 
         } else {
- 
             console.log('No user found with the given mobile number.');
+            alert("No user found");
         }
     });
 }
 
 
-document.getElementById("paymentForm").addEventListener('submit',(event)=>{
-    event.preventDefault();
+function makeRenewal(){
 
-    console.log("hello")
-    console.log(formattedDate)
-});
+    const payType = document.getElementById('paymentType').value;
+    const userId = document.getElementById('id').value;
+    console.log(payType);
+    console.log(userId);
+
+    // Send a message to the main process to make the payment
+    api.makePayment({ payType, userId });
+
+    // Listen for the payment result from the main process
+    api.onRenewal((event, result) => {
+        alert("Your renewal was successful!");
+        console.log('Payment result:', result);
+    });
+}
 

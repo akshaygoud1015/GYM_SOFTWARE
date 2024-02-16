@@ -13,7 +13,7 @@
             <h1 id="title" class="text-center">Add a Client</h1>
         </header>
         <div class="form-wrap">	
-            <form id="survey-form">
+            <form id="survey-form" onsubmit="addClient()">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -69,7 +69,7 @@
                             <label>Payment duration</label>
                             <select id="dropdown" name="role" class="form-control" required>
                                 <option disabled selected value>Select</option>
-                                <option value="monthly">Monthly</option>
+                                <option value="Monthly">Monthly</option>
                                 <option value="Quarterly">Quarterly</option>
                                 <option value="Half-yearly">Half-yearly</option>
                                 <option value="Annually">Annually</option>
