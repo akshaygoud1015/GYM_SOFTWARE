@@ -48,16 +48,31 @@ function searchUser(){
             document.getElementById('name').value = user.name;
             document.getElementById('mobile').value = user.mobile;
             document.getElementById('fee').value = user.fee;
-            document.getElementById('paymentType').value = user.payment_duration;
-            document.getElementById('lastPaymentDate').value = user.last_payment.toISOString().split('T')[0];
+            if (user.last_payment) {
+                document.getElementById('lastPaymentDate').value = user.last_payment.toISOString().split('T')[0];
+            }
             document.getElementById('newpaymentDate').value = formattedDate;
 
+            const selectElement = document.getElementById('paymentType');
+            selectElement.innerHTML = ''; // Clear existing options
+
+            const paymentTypes = ['Monthly', 'Quarterly', 'Half-yearly', 'Annually'];
+            paymentTypes.forEach(paymentType => {
+                const option = document.createElement('option');
+                option.value = paymentType;
+                option.textContent = paymentType;
+                if (paymentType === user.payment_duration) {
+                    option.selected = true; // Select the current payment type
+                }
+                selectElement.appendChild(option);
+            });
 
         } else {
             console.log('No user found with the given mobile number.');
             alert("No user found");
         }
     });
+    document.getElementById('paymentForm').reset();
 }
 
 
@@ -78,3 +93,7 @@ function makeRenewal(){
     });
 }
 
+function signOut(){
+    alert("Successfully signed out!");
+    window.location.href = 'index.html';
+}
