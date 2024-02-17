@@ -88,15 +88,35 @@ ipcMain.on('makePayment', async(event, paymentData) => {
         await connection.execute('UPDATE clients SET last_payment = ?, validity = ? WHERE id = ?', [todayDate, nextRenewalFormatted, id]);
         connection.release(); // Release the connection back to the pool
         console.log('success');
-        alert("Your renewal was successful!");
-        event.reply('paymentResult', 'Your renewal was successful!'); // Send success response
+        event.sender.send('paymentResult', 'Your renewal was successful!'); // Send success response
 
     } catch(error){
         console.error('Error:', error);
-        event.reply('paymentResult', 'Error occurred');
+        event.sender.send('paymentResult', 'Error occurred');
     }
 });
 
+
+ipcMain.on('searchforDues',async(event)=>{
+    try{
+        const connection = await pool.getConnection();
+        const currentDate = new Date();
+        const threeDaysAgo = new Date(currentDate.getTime() - (3 * 24 * 60 * 60 * 1000));
+         // Calculate three days ago
+        const query = 'SELECT * FROM clients WHERE validity <= ?';
+        const params = [threeDaysAgo];
+        const [rows] = await connection.execute(query, params);
+        connection.release();
+        console.log(threeDaysAgo)
+        
+        event.sender.send('duesresult',rows)
+    }
+    catch(error){
+        console.log(error)
+        rows="no upcoming dues"
+        event.sender.send('duesresult',rows)
+    }
+})
   
 
 function createWindow() {

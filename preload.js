@@ -18,6 +18,13 @@ contextBridge.exposeInMainWorld('api', {
         ipcRenderer.send('makePayment', paymentData);
     },
     onRenewal: (callback) => {
-        ipcRenderer.once('paymentResult', callback);
+        ipcRenderer.on('paymentResult', callback);
+    },
+    searchforDues: ()=>{
+        ipcRenderer.send('searchforDues');
+    },
+    userdues: (callback)=>{
+        ipcRenderer.on('duesresult',callback);
+
     }
 });

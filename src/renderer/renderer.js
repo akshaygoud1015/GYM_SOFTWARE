@@ -39,7 +39,7 @@ function searchUser(){
 
     api.searchuser({numb});
     api.onSearchResult((event, rows) => {
-        console.log(rows);
+        
 
 
         if (rows.length > 0) {
@@ -49,8 +49,13 @@ function searchUser(){
             document.getElementById('mobile').value = user.mobile;
             document.getElementById('fee').value = user.fee;
             document.getElementById('paymentType').value = user.payment_duration;
-            document.getElementById('lastPaymentDate').value = user.last_payment.toISOString().split('T')[0];
+            const dateFromDB = user.last_payment;
+            const adjustedDate = new Date(dateFromDB.getTime() - (dateFromDB.getTimezoneOffset() * 60000));
+            const lastpaid = adjustedDate.toISOString().split('T')[0];
+            document.getElementById('lastPaymentDate').value = lastpaid
             document.getElementById('newpaymentDate').value = formattedDate;
+            console.log(formattedDate)
+
 
 
         } else {
@@ -73,8 +78,9 @@ function makeRenewal(){
 
     // Listen for the payment result from the main process
     api.onRenewal((event, result) => {
-        alert("Your renewal was successful!");
+        alert(result)
         console.log('Payment result:', result);
     });
+    
 }
 
