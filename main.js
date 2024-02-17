@@ -88,11 +88,11 @@ ipcMain.on('makePayment', async(event, paymentData) => {
         await connection.execute('UPDATE clients SET last_payment = ?, validity = ? WHERE id = ?', [todayDate, nextRenewalFormatted, id]);
         connection.release(); // Release the connection back to the pool
         console.log('success');
-        event.reply('paymentResult', 'Your renewal was successful!'); // Send success response
+        event.sender.send('paymentResult', 'Your renewal was successful!'); // Send success response
 
     } catch(error){
         console.error('Error:', error);
-        event.reply('paymentResult', 'Error occurred');
+        event.sender.send('paymentResult', 'Error occurred');
     }
 });
 

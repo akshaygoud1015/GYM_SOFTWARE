@@ -9,10 +9,10 @@
 </head>
 <body id="mainContent">
     <h1>New payment</h1>
-<input type="number" id="mobileNumber" placeholder="Enter mobile number">
-<button onclick="searchUser()">Search</button>
+<input type="number" id="mobileNumber" placeholder="Enter mobile number" required>
+<button class="button bb rounded" onclick="searchUser()">Search</button>
 
-<form id="paymentForm" onsubmit="makeRenewal()">
+<form id="paymentForm" class="form" onsubmit="makeRenewal()">
     <label>ID:</label>
     <input type="number" id="id" readonly>
     <label>Name:</label>
@@ -30,7 +30,7 @@
     <label>Last Payment Date:</label>
     <input type="date" id="lastPaymentDate" readonly>
     <label>New payment </label>
-    <input type="date" id="newpaymentDate" readonly>
+    <input type="date" id="newPaymentDate" readonly>
     
     <button type="submit">Make Renewal</button>
 </form>

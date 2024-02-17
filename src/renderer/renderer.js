@@ -49,9 +49,12 @@ function searchUser(){
             document.getElementById('mobile').value = user.mobile;
             document.getElementById('fee').value = user.fee;
             if (user.last_payment) {
-                document.getElementById('lastPaymentDate').value = user.last_payment.toISOString().split('T')[0];
+                const dateFromDB = user.last_payment;
+                const adjustedDate = new Date(dateFromDB.getTime() - (dateFromDB.getTimezoneOffset() * 60000));
+                const lastpaid = adjustedDate.toISOString().split('T')[0];
+                document.getElementById('lastPaymentDate').value = lastpaid
             }
-            document.getElementById('newpaymentDate').value = formattedDate;
+            document.getElementById('newPaymentDate').value = formattedDate;
 
             const selectElement = document.getElementById('paymentType');
             selectElement.innerHTML = ''; // Clear existing options
