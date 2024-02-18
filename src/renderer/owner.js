@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function fetchOverDues(){
     api.searchForOverDues();
 
-    api.userOverDue((event,data)=>{
+    api.userOverDue((event, data)=>{
         const duesContainer = document.getElementById('duesContainer');
 
         if (data == "no dues") {
@@ -61,3 +61,8 @@ function fetchOverDues(){
     }
 
 )}
+
+function signOut(){
+    alert("Successfully signed out!");
+    window.location.href = 'index.html';
+}

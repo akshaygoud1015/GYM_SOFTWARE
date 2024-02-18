@@ -120,19 +120,20 @@ ipcMain.on('searchForDues', async(event) => {
     }
 });
 
-ipcMain.on('searchForOverDues',async(event)=>{
+ipcMain.on('searchForOverDues', async(event) => {
     try{
         const connection= await pool.getConnection();
         const currentDate = new Date();
-        [data,fields]=await connection.execute('SELECT * FROM Clients WHERE validity <  ?',[currentDate])
-        console.log(data)
-        event.sender.send('overDueResult',data)
+        [data,fields] = await connection.execute('SELECT * FROM clients WHERE validity <  ?', [currentDate]);
+        console.log(data);
+        event.sender.send('overDueResult', data);
     }
     catch(error){
-        data="no dues"
-        event.sender.send('overDueResult',data)
+        data = "no dues";
+        event.sender.send('overDueResult', data);
     }
-})
+});
+
 ipcMain.on('searchForPayments', async(event, {id}) => {
     try {
         const connection = await pool.getConnection();
@@ -141,10 +142,24 @@ ipcMain.on('searchForPayments', async(event, {id}) => {
 
         // Send back the search result to the renderer process
         event.sender.send('onSearchPayment', rows);
-        console.log(rows,"rows")
+        console.log(rows, "rows");
     } catch (error) {
         console.error('Error searching user:', error);
     }    
+});
+
+ipcMain.on('getCustomers', async(event) => {
+    try{
+        const connection = await pool.getConnection();
+        [rows, fields] = await connection.execute('SELECT * FROM clients');
+        connection.release;
+        console.log(rows);
+        event.sender.send('customersListResult', rows);
+    }
+    catch(error){
+        rows = "no customers found";
+        event.sender.send('customersListResult', rows);
+    }
 });
 
 function createWindow() {

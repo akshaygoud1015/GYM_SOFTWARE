@@ -110,6 +110,9 @@ function searchPayments(){
         if(rows.length > 0) {
             for (let i = 0; i < rows.length; i++) {
                 const payments = rows[i];
+                const dateFromDB = payments.payment_date;
+                const adjustedDate = new Date(dateFromDB.getTime() - (dateFromDB.getTimezoneOffset() * 60000));
+                const lastpaid = adjustedDate.toISOString().split('T')[0];
 
                 // Create a new card element for each user
                 const card = document.createElement('div');
@@ -117,7 +120,7 @@ function searchPayments(){
 
                 // Create card body
                 const cardBody = document.createElement('div');
-                cardBody.classList.add('card', 'shadow-lg', 'p-3', 'mb-5', 'bg-dark', 'rounded','text-light');
+                cardBody.classList.add('card', 'shadow-lg', 'p-3', 'mb-5', 'bg-success', 'rounded','text-light');
 
                 // Populate card with user details
                 const title = document.createElement('h5');
@@ -126,7 +129,7 @@ function searchPayments(){
 
                 const date = document.createElement('p');
                 date.classList.add('card-text');
-                date.textContent = 'Payment Date: '+ payments.payment_date.toISOString().split('T')[0];;
+                date.textContent = 'Payment Date: '+ lastpaid;
 
                 const type = document.createElement('p');
                 type.classList.add('card-text');
@@ -155,9 +158,4 @@ function searchPayments(){
             paymentsContainer.appendChild(message);
         }
     });
-}
-
-function signOut(){
-    alert("Successfully signed out!");
-    window.location.href = 'index.html';
 }
