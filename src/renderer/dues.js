@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function fetchAndRenderUpcomingDues() {
-    api.searchforDues();
+    api.searchForDues();
 
-    api.userdues((event, rows) => {
+    api.userDues((event, rows) => {
         const duesContainer = document.getElementById('duesContainer');
 
         if (rows == "no upcoming dues") {
@@ -31,7 +31,7 @@ function fetchAndRenderUpcomingDues() {
                 // Populate card with user details
                 const title = document.createElement('h5');
                 title.classList.add('card-title');
-                title.textContent = 'Name : '+user.name;
+                title.textContent = 'Name: '+ user.name;
 
                 const number = document.createElement('p');
                 number.classList.add('card-text');

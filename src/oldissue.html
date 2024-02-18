@@ -9,6 +9,11 @@
 </head>
 <body id="mainContent">
     <h1>Check previous billings</h1>
+    <input type="number" id="userId" placeholder="Enter User ID" required>
+    <button class="button bb rounded" onclick="searchPayments()">Search</button>
+
+    <div id="paymentsContainer"></div>
+
     <a href="owner.html"> back</a>
 </body>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
