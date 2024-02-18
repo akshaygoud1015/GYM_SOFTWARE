@@ -20,19 +20,19 @@ contextBridge.exposeInMainWorld('api', {
     onRenewal: (callback) => {
         ipcRenderer.on('paymentResult', callback);
     },
-    searchForDues: ()=>{
+    searchForDues: () => {
         ipcRenderer.send('searchForDues');
     },
-    userdues: (callback)=>{
+    userdues: (callback) => {
         ipcRenderer.on('duesresult',callback);
     },
-    searchForOverDues:()=>{
+    searchForOverDues:() => {
         ipcRenderer.send('searchForOverDues');
     },
-    userOverDue: (callback)=>{
-        ipcRenderer.on('overDueResult',callback)
+    userOverDue: (callback) => {
+        ipcRenderer.on('overDueResult', callback)
     },
-    userDues: (callback)=>{
+    userDues: (callback) => {
         ipcRenderer.on('duesResult', callback);
     },
     searchForPayments: (userId) => {
@@ -40,5 +40,11 @@ contextBridge.exposeInMainWorld('api', {
     },
     onSearchPayment: (callback) => {
         ipcRenderer.on('onSearchPayment', callback);
+    },
+    getCustomers: ()=> {
+        ipcRenderer.send('getCustomers');        
+    },
+    customersList: (callback) => {
+        ipcRenderer.on('customersListResult', callback);
     }
 });
