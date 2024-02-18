@@ -26,5 +26,12 @@ ALTER TABLE clients
 ADD COLUMN last_payment DATE,
 ADD COLUMN validity DATE;
 
+CREATE TABLE payments (
+    user_id INT NOT NULL,
+    payment_date DATE NOT NULL,
+    payment_type TEXT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES clients(id)
+);
 
 npx electron main.js

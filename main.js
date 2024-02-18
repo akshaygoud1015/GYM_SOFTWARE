@@ -57,6 +57,7 @@ ipcMain.on('searchuser', async (event, { numb }) => { // Destructuring da numb f
 ipcMain.on('makePayment', async(event, paymentData) => {
     const payment_type = paymentData.payType;
     const id = paymentData.userId;
+    const fees = paymentData.amount;
     console.log(id);
     console.log(payment_type);
 
@@ -86,6 +87,7 @@ ipcMain.on('makePayment', async(event, paymentData) => {
   
         // Update the payment date in the database
         await connection.execute('UPDATE clients SET last_payment = ?, validity = ? WHERE id = ?', [todayDate, nextRenewalFormatted, id]);
+        await connection.execute('INSERT INTO payments (user_id, payment_date, payment_type, amount) VALUES (?,?,?,?)',[id, todayDate, payment_type, fees]);
         connection.release(); // Release the connection back to the pool
         console.log('success');
         event.sender.send('paymentResult', 'Your renewal was successful!'); // Send success response
@@ -97,7 +99,7 @@ ipcMain.on('makePayment', async(event, paymentData) => {
 });
 
 
-ipcMain.on('searchforDues',async(event)=>{
+ipcMain.on('searchForDues', async(event) => {
     try{
         const connection = await pool.getConnection();
         const currentDate = new Date();
@@ -109,12 +111,12 @@ ipcMain.on('searchforDues',async(event)=>{
         connection.release();
         console.log(threeDaysAgo)
 
-        event.sender.send('duesresult',rows)
+        event.sender.send('duesResult',rows)
     }
     catch(error){
         console.log(error)
         rows="no upcoming dues"
-        event.sender.send('duesresult',rows)
+        event.sender.send('duesResult',rows)
     }
 });
 
@@ -131,6 +133,19 @@ ipcMain.on('searchForOverDues',async(event)=>{
         event.sender.send('overDueResult',data)
     }
 })
+ipcMain.on('searchForPayments', async(event, {id}) => {
+    try {
+        const connection = await pool.getConnection();
+        const [rows, fields] = await connection.execute('SELECT * FROM payments WHERE user_id = ?', [id]);
+        connection.release();
+
+        // Send back the search result to the renderer process
+        event.sender.send('onSearchPayment', rows);
+        console.log(rows,"rows")
+    } catch (error) {
+        console.error('Error searching user:', error);
+    }    
+});
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
