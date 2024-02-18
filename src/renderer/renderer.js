@@ -39,7 +39,7 @@ function searchUser(){
 
     api.searchuser({numb});
     api.onSearchResult((event, rows) => {
-        console.log(rows);
+
 
 
         if (rows.length > 0) {
@@ -91,7 +91,7 @@ function makeRenewal(){
 
     // Listen for the payment result from the main process
     api.onRenewal((event, result) => {
-        alert("Your renewal was successful!");
+        alert(result);
         console.log('Payment result:', result);
     });
 }

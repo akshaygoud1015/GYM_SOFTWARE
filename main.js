@@ -96,7 +96,27 @@ ipcMain.on('makePayment', async(event, paymentData) => {
     }
 });
 
-  
+
+ipcMain.on('searchforDues',async(event)=>{
+    try{
+        const connection = await pool.getConnection();
+        const currentDate = new Date();
+        const threeDaysAgo = new Date(currentDate.getTime() - (3 * 24 * 60 * 60 * 1000));
+         // Calculate three days ago
+        const query = 'SELECT * FROM clients WHERE validity <= ?';
+        const params = [threeDaysAgo];
+        const [rows] = await connection.execute(query, params);
+        connection.release();
+        console.log(threeDaysAgo)
+
+        event.sender.send('duesresult',rows)
+    }
+    catch(error){
+        console.log(error)
+        rows="no upcoming dues"
+        event.sender.send('duesresult',rows)
+    }
+})
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
