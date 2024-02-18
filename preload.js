@@ -25,5 +25,13 @@ contextBridge.exposeInMainWorld('api', {
     },
     userdues: (callback)=>{
         ipcRenderer.on('duesresult',callback);
+    },
+    searchForOverDues:()=>{
+        ipcRenderer.send('searchForOverDues');
+    },
+    userOverDue: (callback)=>{
+        ipcRenderer.on('overDueResult',callback)
     }
+
+
 });

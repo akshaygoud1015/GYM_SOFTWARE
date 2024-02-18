@@ -101,10 +101,10 @@ ipcMain.on('searchforDues',async(event)=>{
     try{
         const connection = await pool.getConnection();
         const currentDate = new Date();
-        const threeDaysAgo = new Date(currentDate.getTime() - (3 * 24 * 60 * 60 * 1000));
+        const threeDaysAgo = new Date(currentDate.getTime() + (3 * 24 * 60 * 60 * 1000));
          // Calculate three days ago
-        const query = 'SELECT * FROM clients WHERE validity <= ?';
-        const params = [threeDaysAgo];
+        const query = 'SELECT * FROM clients WHERE validity BETWEEN ? AND ?';
+        const params = [currentDate,threeDaysAgo];
         const [rows] = await connection.execute(query, params);
         connection.release();
         console.log(threeDaysAgo)
@@ -115,6 +115,20 @@ ipcMain.on('searchforDues',async(event)=>{
         console.log(error)
         rows="no upcoming dues"
         event.sender.send('duesresult',rows)
+    }
+});
+
+ipcMain.on('searchForOverDues',async(event)=>{
+    try{
+        const connection= await pool.getConnection();
+        const currentDate = new Date();
+        [data,fields]=await connection.execute('SELECT * FROM Clients WHERE validity <  ?',[currentDate])
+        console.log(data)
+        event.sender.send('overDueResult',data)
+    }
+    catch(error){
+        data="no dues"
+        event.sender.send('overDueResult',data)
     }
 })
 

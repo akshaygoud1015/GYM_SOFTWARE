@@ -40,7 +40,9 @@ function fetchAndRenderUpcomingDues() {
                 const date = document.createElement('p');
                 date.classList.add('card-text');
                 // Adjust the date format as needed
-                date.textContent = 'Valid till : '+ user.last_payment.toISOString().split('T')[0];
+                const dateFromDB = user.validity;
+                const adjustedDate = new Date(dateFromDB.getTime() - (dateFromDB.getTimezoneOffset() * 60000));
+                date.textContent = 'Valid till : '+ adjustedDate.toISOString().split('T')[0];
 
                 // Append elements to card body
                 cardBody.appendChild(title);
