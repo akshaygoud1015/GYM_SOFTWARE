@@ -39,7 +39,7 @@ function searchUser(){
 
     api.searchuser({numb});
     api.onSearchResult((event, rows) => {
-        
+
 
 
         if (rows.length > 0) {
@@ -48,21 +48,34 @@ function searchUser(){
             document.getElementById('name').value = user.name;
             document.getElementById('mobile').value = user.mobile;
             document.getElementById('fee').value = user.fee;
-            document.getElementById('paymentType').value = user.payment_duration;
-            const dateFromDB = user.last_payment;
-            const adjustedDate = new Date(dateFromDB.getTime() - (dateFromDB.getTimezoneOffset() * 60000));
-            const lastpaid = adjustedDate.toISOString().split('T')[0];
-            document.getElementById('lastPaymentDate').value = lastpaid
-            document.getElementById('newpaymentDate').value = formattedDate;
-            console.log(formattedDate)
+            if (user.last_payment) {
+                const dateFromDB = user.last_payment;
+                const adjustedDate = new Date(dateFromDB.getTime() - (dateFromDB.getTimezoneOffset() * 60000));
+                const lastpaid = adjustedDate.toISOString().split('T')[0];
+                document.getElementById('lastPaymentDate').value = lastpaid
+            }
+            document.getElementById('newPaymentDate').value = formattedDate;
 
+            const selectElement = document.getElementById('paymentType');
+            selectElement.innerHTML = ''; // Clear existing options
 
+            const paymentTypes = ['Monthly', 'Quarterly', 'Half-yearly', 'Annually'];
+            paymentTypes.forEach(paymentType => {
+                const option = document.createElement('option');
+                option.value = paymentType;
+                option.textContent = paymentType;
+                if (paymentType === user.payment_duration) {
+                    option.selected = true; // Select the current payment type
+                }
+                selectElement.appendChild(option);
+            });
 
         } else {
             console.log('No user found with the given mobile number.');
             alert("No user found");
         }
     });
+    document.getElementById('paymentForm').reset();
 }
 
 
@@ -78,9 +91,13 @@ function makeRenewal(){
 
     // Listen for the payment result from the main process
     api.onRenewal((event, result) => {
-        alert(result)
+        alert(result);
         console.log('Payment result:', result);
     });
     
 }
 
+function signOut(){
+    alert("Successfully signed out!");
+    window.location.href = 'index.html';
+}
