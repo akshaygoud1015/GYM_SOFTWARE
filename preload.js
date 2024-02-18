@@ -31,9 +31,7 @@ contextBridge.exposeInMainWorld('api', {
     },
     userOverDue: (callback)=>{
         ipcRenderer.on('overDueResult',callback)
-    }
-
-
+    },
     userDues: (callback)=>{
         ipcRenderer.on('duesResult', callback);
     },
