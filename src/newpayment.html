@@ -9,26 +9,28 @@
 </head>
 <body id="mainContent">
     <h1>New payment</h1>
-<input type="number" id="mobileNumber" placeholder="Enter mobile number" required   >
-<button  class="button bb rounded" onclick="searchUser()">Search</button>
+<input type="number" id="mobileNumber" placeholder="Enter mobile number" required>
+<button class="button bb rounded" onclick="searchUser()">Search</button>
 
 <form id="paymentForm" class="form" onsubmit="makeRenewal()">
-    <label>id:</label>
+    <label>ID:</label>
     <input type="number" id="id" readonly>
-    <label>name:</label>
+    <label>Name:</label>
     <input type="text" id="name" readonly>
-    <label>mobile:</label>
+    <label>Mobile:</label>
     <input type="number" id="mobile" readonly>
     <label>Payment Type:</label>
-    <input type="text" id="paymentType" readonly>
-    <label>fee:</label>
+    <select id="paymentType" name="paymentType">
+        <!-- Options will be dynamically added here -->
+    </select> 
+    <label>Fee:</label>
     <input type="number" id="fee" readonly>
     <label>Discount:</label>
     <input type="number" id="disc"> 
-    <label> Last Payment Date:</label>
+    <label>Last Payment Date:</label>
     <input type="date" id="lastPaymentDate" readonly>
     <label>New payment </label>
-    <input type="date" id="newpaymentDate" readonly>
+    <input type="date" id="newPaymentDate" readonly>
     
     <button type="submit">Make Renewal</button>
 </form>
