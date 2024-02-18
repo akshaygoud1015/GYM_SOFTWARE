@@ -94,6 +94,7 @@ function makeRenewal(){
         alert(result);
         console.log('Payment result:', result);
     });
+    
 }
 
 function signOut(){
