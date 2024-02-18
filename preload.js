@@ -25,6 +25,5 @@ contextBridge.exposeInMainWorld('api', {
     },
     userdues: (callback)=>{
         ipcRenderer.on('duesresult',callback);
-
     }
 });

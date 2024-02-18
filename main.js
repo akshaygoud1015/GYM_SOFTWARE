@@ -108,7 +108,7 @@ ipcMain.on('searchforDues',async(event)=>{
         const [rows] = await connection.execute(query, params);
         connection.release();
         console.log(threeDaysAgo)
-        
+
         event.sender.send('duesresult',rows)
     }
     catch(error){
@@ -117,7 +117,6 @@ ipcMain.on('searchforDues',async(event)=>{
         event.sender.send('duesresult',rows)
     }
 })
-  
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
