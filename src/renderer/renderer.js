@@ -83,11 +83,12 @@ function makeRenewal(){
 
     const payType = document.getElementById('paymentType').value;
     const userId = document.getElementById('id').value;
+    const amount = document.getElementById('fee').value;
     console.log(payType);
     console.log(userId);
 
     // Send a message to the main process to make the payment
-    api.makePayment({ payType, userId });
+    api.makePayment({ payType, userId, amount });
 
     // Listen for the payment result from the main process
     api.onRenewal((event, result) => {
@@ -95,6 +96,65 @@ function makeRenewal(){
         console.log('Payment result:', result);
     });
     
+}
+
+function searchPayments(){
+    const id = document.getElementById('userId').value;
+
+    api.searchForPayments({id});
+    api.onSearchPayment((event, rows) => {
+
+        const paymentsContainer = document.getElementById('paymentsContainer');
+        document.getElementById('paymentsContainer').innerHTML='';
+        
+        if(rows.length > 0) {
+            for (let i = 0; i < rows.length; i++) {
+                const payments = rows[i];
+
+                // Create a new card element for each user
+                const card = document.createElement('div');
+                card.classList.add('col-sm-5', 'md-4' ,);
+
+                // Create card body
+                const cardBody = document.createElement('div');
+                cardBody.classList.add('card', 'shadow-lg', 'p-3', 'mb-5', 'bg-dark', 'rounded','text-light');
+
+                // Populate card with user details
+                const title = document.createElement('h5');
+                title.classList.add('card-title');
+                title.textContent = 'User ID: '+ payments.user_id;
+
+                const date = document.createElement('p');
+                date.classList.add('card-text');
+                date.textContent = 'Payment Date: '+ payments.payment_date.toISOString().split('T')[0];;
+
+                const type = document.createElement('p');
+                type.classList.add('card-text');
+                type.textContent = 'Payment Type: '+ payments.payment_type;
+
+                const fees = document.createElement('p');
+                fees.classList.add('card-text');
+                fees.textContent = 'Amount: '+ payments.amount;
+
+                // Append elements to card body
+                cardBody.appendChild(title);
+                cardBody.appendChild(date);
+                cardBody.appendChild(type);
+                cardBody.appendChild(fees);
+
+                // Append card body to card
+                card.appendChild(cardBody);
+
+                // Append card to dues container
+                paymentsContainer.appendChild(card);
+            }
+        } else {
+            console.log("no payments found");
+            const message = document.createElement('p');
+            message.textContent = "No payments found";
+            paymentsContainer.appendChild(message);
+        }
+    });
 }
 
 function signOut(){

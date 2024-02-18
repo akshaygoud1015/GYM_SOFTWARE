@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function fetchAndRenderUpcomingDues() {
-    api.searchforDues();
+    api.searchForDues();
 
-    api.userdues((event, rows) => {
+    api.userDues((event, rows) => {
         const duesContainer = document.getElementById('duesContainer');
 
         if (rows == "no upcoming dues") {
@@ -31,7 +31,7 @@ function fetchAndRenderUpcomingDues() {
                 // Populate card with user details
                 const title = document.createElement('h5');
                 title.classList.add('card-title');
-                title.textContent = 'Name : '+user.name;
+                title.textContent = 'Name: '+ user.name;
 
                 const number = document.createElement('p');
                 number.classList.add('card-text');
@@ -40,7 +40,7 @@ function fetchAndRenderUpcomingDues() {
                 const date = document.createElement('p');
                 date.classList.add('card-text');
                 // Adjust the date format as needed
-                date.textContent = 'Valid till : '+ user.last_payment.toISOString().split('T')[0];
+                date.textContent = 'Valid till: '+ user.last_payment.toISOString().split('T')[0];
 
                 // Append elements to card body
                 cardBody.appendChild(title);
