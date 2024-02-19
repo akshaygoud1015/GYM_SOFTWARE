@@ -39,7 +39,31 @@ ipcMain.on('insert-client', async (event, clientData) => {
     }
 });
 
+ipcMain.on('insert-staff', async (event, staffData) => {
+    try {
+        // Replace undefined values with null
+        
+        const data = {
+            name: staffData.name || null,
+            phoneNumber: staffData.phoneNumber || null,
+            alternatePhoneNumber: staffData.alternatePhoneNumber || null,
+            age: staffData.age || null,
+            salary: staffData.salary || null,
+            date: staffData.date || null
+        };
+        
 
+        const connection = await pool.getConnection();
+        await connection.execute('INSERT INTO staff (name, phone_number,alternate_phone_number,age,salary ,date_of_joining) VALUES (?, ?, ?, ?, ?, ?)', 
+            [data.name, data.phoneNumber, data.alternatePhoneNumber, data.age, data.salary, data.date]);
+        connection.release();
+        console.log('Data inserted successfully');
+        event.reply('data-saved', 'Data saved successfully');
+    } catch (error) {
+        console.error('Error inserting data:', error);
+        event.reply('data-saved', 'Error saving data');
+    }
+});
 ipcMain.on('searchuser', async (event, { numb }) => { // Destructuring da numb from usernumb object
     try {
         const connection = await pool.getConnection();
@@ -159,6 +183,20 @@ ipcMain.on('getCustomers', async(event) => {
     catch(error){
         rows = "no customers found";
         event.sender.send('customersListResult', rows);
+    }
+});
+
+ipcMain.on('getstaff', async(event) => {
+    try{
+        const connection = await pool.getConnection();
+        [rows, fields] = await connection.execute('SELECT * FROM staff');
+        connection.release;
+        console.log(rows);
+        event.sender.send('staffListResult', rows);
+    }
+    catch(error){
+        rows = "no staff found";
+        event.sender.send('staffListResult', rows);
     }
 });
 

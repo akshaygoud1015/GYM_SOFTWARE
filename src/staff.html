@@ -3,15 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Staff Details</title>
     <link rel="stylesheet" href="staff.css">
     <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: #333;
+        }
+    </style>
 </head>
-<body id="mainContent">
-    <h1>
-        Staff details
-        <a href="owner.html"> back</a>
-    </h1>
+<body>
+    <div class="container">
+        <h1>Staff Details</h1>
+        <form id="staffForm" onsubmit="addstaff()">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name"><br>
+            
+            <label for="phoneNumber">Phone Number:</label><br>
+            <input type="text" id="phoneNumber" name="phoneNumber"><br>
+            
+            <label for="alternatePhoneNumber">Alternate Phone Number:</label><br>
+            <input type="text" id="alternatePhoneNumber" name="alternatePhoneNumber"><br>
+            
+            <label for="age">Age:</label><br>
+            <input type="number" id="age" name="age"><br>
+            
+            <label for="salary">Salary:</label><br>
+            <input type="number" id="salary" name="salary"><br>
+            
+            <label for="date">Date of Joining:</label><br>
+            <input type="date" id="date" name="date"><br>
+            
+            <input type="submit" value="Submit">
+        </form>
+        
+        <a href="owner.html" class="back-link">Back</a>
+    </div>
 </body>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="./renderer/renderer.js"></script>

@@ -5,6 +5,10 @@ contextBridge.exposeInMainWorld('api', {
     sendInsertClient: (clientData) => {
         ipcRenderer.send('insert-client', clientData);
     },
+
+    sendInsertstaff: (staffData) => {
+        ipcRenderer.send('insert-staff', staffData);
+    },
     searchuser: (usernumb) => {
         ipcRenderer.send('searchuser', usernumb);
     },
@@ -46,5 +50,12 @@ contextBridge.exposeInMainWorld('api', {
     },
     customersList: (callback) => {
         ipcRenderer.on('customersListResult', callback);
+    },
+
+    getstaff: ()=> {
+        ipcRenderer.send('getstaff');        
+    },
+    staffList: (callback) => {
+        ipcRenderer.on('staffListResult', callback);
     }
 });
