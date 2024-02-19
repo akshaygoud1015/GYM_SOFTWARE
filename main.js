@@ -186,19 +186,7 @@ ipcMain.on('getCustomers', async(event) => {
     }
 });
 
-ipcMain.on('getstaff', async(event) => {
-    try{
-        const connection = await pool.getConnection();
-        [rows, fields] = await connection.execute('SELECT * FROM staff');
-        connection.release;
-        console.log(rows);
-        event.sender.send('staffListResult', rows);
-    }
-    catch(error){
-        rows = "no staff found";
-        event.sender.send('staffListResult', rows);
-    }
-});
+
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
