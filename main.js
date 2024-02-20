@@ -186,6 +186,22 @@ ipcMain.on('getCustomers', async(event) => {
     }
 });
 
+// Assuming you have a database connection pool named 'pool'
+
+ipcMain.on('getStaff', async (event) => {
+    try {
+        const connection = await pool.getConnection();
+        [rows, fields] = await connection.execute('SELECT * FROM staff'); // Assuming 'staff' is the name of your staff table
+        connection.release();
+        console.log(rows);
+        event.sender.send('staffListResult', rows);
+    } catch (error) {
+        console.error("Error fetching staff data:", error);
+        event.sender.send('staffListResult', []); // Send an empty array in case of error
+    }
+});
+
+
 
 
 function createWindow() {

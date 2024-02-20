@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Details</title>
+    <link rel="stylesheet" href="viewtrainer.css">
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body id="mainContent">
+    <h1>View Staff</h1>
+
+    <div id="staffContainer"></div>
+    <a href="owner.html">Back</a>
+</body>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./renderer/viewtrainer.js"></script>
+
+<script>
+    function loadCSS(url) {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = url;
+        document.head.appendChild(link);
+    }
+
+    // Load CSS file dynamically
+    loadCSS('viewtrainer.css');
+</script>
+</html>

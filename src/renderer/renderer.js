@@ -47,10 +47,10 @@ function addstaff(){
     api.sendInsertstaff({ name, phoneNumber, alternatePhoneNumber, age, salary, date});
 
     // Listen for confirmation from the main process
-    api.onDataSaved((event, response) => {
-        console.log('Response received after saving data:', response);
-       });
-    alert("Submitted!")     
+    api.onStaffDataSaved((event, response) => {
+        console.log('Response received after saving staff data:', response);
+        alert("Staff data submitted!");
+    });   
 }
 
 

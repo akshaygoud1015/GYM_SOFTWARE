@@ -51,7 +51,13 @@ contextBridge.exposeInMainWorld('api', {
     customersList: (callback) => {
         ipcRenderer.on('customersListResult', callback);
     },
+    getStaff: () => { // New method for fetching staff data
+        ipcRenderer.send('getStaff');
+    },
 
+    staffList: (callback) => { // New method for receiving staff data
+        ipcRenderer.on('staffListResult', callback);
+    }
     
     
 });

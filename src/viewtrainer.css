@@ -1,0 +1,27 @@
+.card {
+    background-color: #f8f9fa; /* Light gray background */
+    border: 1px solid #dee2e6; /* Light border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding inside the card */
+    margin-bottom: 20px; /* Spacing between cards */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+.card-title {
+    font-size: 20px; /* Larger font size for title */
+    margin-bottom: 10px; /* Spacing below title */
+}
+
+.card-text {
+    font-size: 16px; /* Medium font size for text */
+    margin-bottom: 5px; /* Spacing below text */
+}
+
+.card-text:last-child {
+    margin-bottom: 0; /* Remove spacing below last text element */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Lift card slightly on hover */
+    transition: transform 0.3s ease; /* Smooth transition effect */
+}
