@@ -15,6 +15,10 @@ contextBridge.exposeInMainWorld('api', {
     onDataSaved: (callback) => {
         ipcRenderer.on('data-saved', callback);
     },
+
+    onstaffDataSaved: (callback) => {
+        ipcRenderer.on('staffdata-saved', callback);
+    },
     onSearchResult: (callback) => { // Listen for search result from main process
         ipcRenderer.on('searchuser-result', callback);
     },

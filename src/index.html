@@ -33,26 +33,43 @@
 
 
 
-<script>
-    document.getElementById('submit').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        // Get the values entered by the user
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
-
-        // Your validation logic here
-        if (username === 'owner' && password === '123') {
-            // Redirect to owner page
-            window.location.href = 'owner.html';
-        } else if (username === 'trainer' && password === 'trainerpassword') {
-            // Redirect to trainer page
-            window.location.href = 'trainer.html';
-        } else {
-            // Display an error message or handle invalid login
-            alert('Invalid username or password');
+      <script>
+        // Function to handle form submission
+        function handleFormSubmit(event) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            // Get the values entered by the user
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+    
+            // Your validation logic here
+            if (username === 'owner' && password === '123') {
+                // Redirect to owner page
+                window.location.href = 'owner.html';
+            } else if (username === 'trainer' && password === 'trainerpassword') {
+                // Redirect to trainer page
+                window.location.href = 'trainer.html';
+            } else {
+                // Display an error message or handle invalid login
+                alert('Invalid username or password');
+            }
         }
-    });
-</script>
+    
+        // Add event listener for Enter key press in input fields
+        document.getElementById('username').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                document.getElementById('submit').click(); // Trigger click on submit button
+            }
+        });
+    
+        document.getElementById('password').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                document.getElementById('submit').click(); // Trigger click on submit button
+            }
+        });
+    
+        // Add event listener for click on submit button
+        document.getElementById('submit').addEventListener('click', handleFormSubmit);
+    </script>
 </body>
 </html>

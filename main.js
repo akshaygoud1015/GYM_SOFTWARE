@@ -58,10 +58,10 @@ ipcMain.on('insert-staff', async (event, staffData) => {
             [data.name, data.phoneNumber, data.alternatePhoneNumber, data.age, data.salary, data.date]);
         connection.release();
         console.log('Data inserted successfully');
-        event.reply('data-saved', 'Data saved successfully');
+        event.reply('staffdata-saved', 'Data saved successfully');
     } catch (error) {
         console.error('Error inserting data:', error);
-        event.reply('data-saved', 'Error saving data');
+        event.reply('staffdata-saved', 'Error saving data');
     }
 });
 ipcMain.on('searchuser', async (event, { numb }) => { // Destructuring da numb from usernumb object
