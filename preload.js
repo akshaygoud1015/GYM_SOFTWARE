@@ -46,5 +46,16 @@ contextBridge.exposeInMainWorld('api', {
     },
     customersList: (callback) => {
         ipcRenderer.on('customersListResult', callback);
+    },
+    billingInfo: (dates)=>{
+        ipcRenderer.send("billingInfo",dates)
+    },
+    billingResults: (callback)=>{
+        ipcRenderer.on('billingResult',callback)
+    },
+    paymentUpdate: (callback)=>{
+        ipcRenderer.on('addingToPayments',callback)
     }
+
+
 });

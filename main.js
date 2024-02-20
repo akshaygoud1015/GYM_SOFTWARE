@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const mysql = require('mysql2/promise'); // Import mysql2/promise for async/await support
+const { STATUS_CODES } = require('http');
 
 // Create a connection pool
 const pool = mysql.createPool({
@@ -30,12 +31,16 @@ ipcMain.on('insert-client', async (event, clientData) => {
         const connection = await pool.getConnection();
         await connection.execute('INSERT INTO clients (name, mobile, gender, address, age, fee, payment_duration,date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 
             [data.name, data.mobile, data.gender, data.adress, data.age, data.fee, data.paymentDuration, data.formattedDate]);
+
+        const [userId,extra]= await connection.execute('SELECT id FROM Clients WHERE mobile =?',[data.mobile])    
         connection.release();
-        console.log('Data inserted successfully');
+        console.log('Data inserted successfully',userId);
         event.reply('data-saved', 'Data saved successfully');
+        event.reply('addingToPayments',userId)
     } catch (error) {
         console.error('Error inserting data:', error);
         event.reply('data-saved', 'Error saving data');
+        
     }
 });
 
@@ -161,6 +166,28 @@ ipcMain.on('getCustomers', async(event) => {
         event.sender.send('customersListResult', rows);
     }
 });
+
+
+ipcMain.on("billingInfo", async(event,dates)=>{
+    const month=dates.month
+    const year=dates.year
+    try{
+        const connection = await pool.getConnection();
+        console.log(year,month)
+        const startDate = new Date(year, month - 1, 1); 
+        const endDate = new Date(year, month, 0);
+
+        const[rows,fields]=  await connection.execute("SELECT * FROM Payments WHERE payment_date BETWEEN ? AND ? ",[startDate,endDate])
+        console.log(rows)
+        event.sender.send("billingResult",rows)
+    }
+    catch(error){
+        console.log(error)
+        rows="No bills generated for the selected year/month"
+        event.sender.send("billingResult",rows)
+    }
+
+})
 
 function createWindow() {
     const mainWindow = new BrowserWindow({

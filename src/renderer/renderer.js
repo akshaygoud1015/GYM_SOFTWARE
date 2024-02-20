@@ -14,9 +14,7 @@ function addClient(){
     const name = document.getElementById('name').value;
     const mobile = document.getElementById('number').value;
     const gender = document.querySelector('input[name="flexRadioDefault"]:checked').value;
-    console.log(gender)
     const adress = document.getElementById('adress').value;
-    console.log(adress)
     const age = document.getElementById('age').value;
     const fee = document.getElementById('fee').value;
     const paymentDuration = document.getElementById('dropdown').value;
@@ -25,10 +23,20 @@ function addClient(){
 
     api.sendInsertClient({ name, mobile, gender, adress, age, fee, paymentDuration, formattedDate});
 
+    
+
     // Listen for confirmation from the main process
     api.onDataSaved((event, response) => {
         console.log('Response received after saving data:', response);
        });
+
+    api.paymentUpdate((event,response)=>{
+        userId=response[0].id;
+        payType=paymentDuration;
+        amount=fee;
+        api.makePayment({ payType,userId,amount });
+
+    })   
     alert("Submitted!")     
 }
 
