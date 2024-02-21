@@ -21,7 +21,7 @@
             <input type="password" name="pass" id="password" required="">
             <label>Password</label>
           </div>
-          <a href="#" id="submit">
+          <a href="#" id="submit" onclick="checkPassword()">
             <span></span>
             <span></span>
             <span></span>
@@ -33,26 +33,7 @@
 
 
 
-<script>
-    document.getElementById('submit').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent the default form submission
 
-        // Get the values entered by the user
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
-
-        // Your validation logic here
-        if (username === 'owner' && password === '123') {
-            // Redirect to owner page
-            window.location.href = 'owner.html';
-        } else if (username === 'trainer' && password === 'trainerpassword') {
-            // Redirect to trainer page
-            window.location.href = 'trainer.html';
-        } else {
-            // Display an error message or handle invalid login
-            alert('Invalid username or password');
-        }
-    });
-</script>
+<script src="./renderer/renderer.js"></script>
 </body>
 </html>

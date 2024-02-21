@@ -41,21 +41,31 @@ contextBridge.exposeInMainWorld('api', {
     onSearchPayment: (callback) => {
         ipcRenderer.on('onSearchPayment', callback);
     },
-    getCustomers: ()=> {
+    getCustomers: () => {
         ipcRenderer.send('getCustomers');        
     },
     customersList: (callback) => {
         ipcRenderer.on('customersListResult', callback);
     },
-    billingInfo: (dates)=>{
-        ipcRenderer.send("billingInfo",dates)
+    billingInfo: (dates) => {
+        ipcRenderer.send("billingInfo",dates);
     },
-    billingResults: (callback)=>{
-        ipcRenderer.on('billingResult',callback)
+    billingResults: (callback) => {
+        ipcRenderer.on('billingResult',callback);
     },
-    paymentUpdate: (callback)=>{
-        ipcRenderer.on('addingToPayments',callback)
+    paymentUpdate: (callback) => {
+        ipcRenderer.on('addingToPayments',callback);
+    },
+    checkLogin: (credentials) => {
+        ipcRenderer.send('checkForLogin', credentials);
+    },
+    onLogin: (callback) => {
+        ipcRenderer.once('loginStatus', callback);
+    },
+    newPassword: (newCredentials) => {
+        ipcRenderer.send('setPassword', newCredentials);
+    },
+    onChangePassword: (callback) => {
+        ipcRenderer.on('onSetPassword', callback);
     }
-
-
 });
