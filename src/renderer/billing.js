@@ -11,16 +11,16 @@ document.getElementById("billing").addEventListener("submit", (event) => {
 function getBillings(year, month) {
     api.billingInfo({ year, month });
 
-    api.billingResults((event, rows) => {
+    api.billingResults((event, rows, clientCount) => {
         let sum = 0.00;
         for(i=0;i<rows.length;i++){
             
             sum+=parseInt(rows[i].amount)
         }
         console.log(sum)
-        document.getElementById("billings").value=sum;
-
-    });
-    
-    
+        newClients = parseInt(clientCount.count);
+        document.getElementById("billings").value = sum;
+        document.getElementById("clients").value = newClients;
+        
+    });    
 }
