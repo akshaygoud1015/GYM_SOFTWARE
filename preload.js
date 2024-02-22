@@ -48,12 +48,13 @@ contextBridge.exposeInMainWorld('api', {
         ipcRenderer.on('onSearchPayment', callback);
     },
     getCustomers: () => {
-        ipcRenderer.send('getCustomers');
+        ipcRenderer.send('getCustomers');        
     },
     customersList: (callback) => {
         ipcRenderer.on('customersListResult', callback);
     },
     billingInfo: (dates) => {
+
         ipcRenderer.send("billingInfo", dates);
     },
     billingResults: (callback) => {
@@ -68,5 +69,18 @@ contextBridge.exposeInMainWorld('api', {
 
     staffList: (callback) => { // New method for receiving staff data
         ipcRenderer.on('staffListResult', callback);
+     },
+    checkLogin: (credentials) => {
+        ipcRenderer.send('checkForLogin', credentials);
+    },
+    onLogin: (callback) => {
+        ipcRenderer.once('loginStatus', callback);
+    },
+    newPassword: (newCredentials) => {
+        ipcRenderer.send('setPassword', newCredentials);
+    },
+    onChangePassword: (callback) => {
+        ipcRenderer.on('onSetPassword', callback);
+
     }
 });

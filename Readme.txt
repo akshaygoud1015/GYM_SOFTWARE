@@ -34,6 +34,7 @@ CREATE TABLE payments (
     FOREIGN KEY (user_id) REFERENCES clients(id)
 );
 
+
 CREATE TABLE staff (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
@@ -44,4 +45,14 @@ CREATE TABLE staff (
     date_of_joining DATE
 );
 
+
+CREATE TABLE login (
+    username TEXT NOT NULL,
+    password TEXT NOT NULL
+);
+
+INSERT INTO login (username, password) VALUES ('owner', '123');
+INSERT INTO login (username, password) VALUES ('trainer', 'trainer123');
+
 npx electron main.js
+

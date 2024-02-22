@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const mysql = require('mysql2/promise'); // Import mysql2/promise for async/await support
 const { STATUS_CODES } = require('http');
+const { eventNames } = require('process');
 
 // Create a connection pool
 const pool = mysql.createPool({
@@ -10,6 +11,52 @@ const pool = mysql.createPool({
     password: 'Hari@0118',
     database: 'gymclient',
     connectionLimit: 10 // Adjust the connection limit as per your requirements
+});
+
+ipcMain.on('checkForLogin', async (event, credentials) => {
+    try {
+        let key = 0;
+        const user = credentials.user;
+        const pass = credentials.pass;
+
+        const connection = await pool.getConnection();
+        const [passD, extra] = await connection.execute('SELECT password FROM login WHERE username = ?', [user]);
+        connection.release();
+
+        if(passD.length > 0) {
+            const passkey = passD[0].password;
+
+            if (passkey === pass) {
+                if (user === 'owner') {
+                    key = 1;
+                } else if (user === 'trainer') {
+                    key = 2;
+                }
+                event.sender.send('loginStatus', key);
+            } else {
+                event.sender.send('loginStatus', 'Invalid credentials');
+            }
+        } else {
+            event.sender.send('loginStatus', 'No user found');
+        }
+    } catch (error) {
+        console.error('Error logging in', error);
+    }
+});
+
+ipcMain.on('setPassword', async (event, newCredentials) => {
+    try {
+        const user = newCredentials.user;
+        const pass = newCredentials.pass;
+
+        const connection = await pool.getConnection();
+        await connection.execute('UPDATE login SET password = ? WHERE username = ?', [pass, user]);   
+        connection.release();
+        event.sender.send('onSetPassword', 'Password changed successfully');             
+
+    } catch (error) {
+        console.error('Error changing password', error);
+    }
 });
 
 ipcMain.on('insert-client', async (event, clientData) => {
@@ -32,15 +79,15 @@ ipcMain.on('insert-client', async (event, clientData) => {
         await connection.execute('INSERT INTO clients (name, mobile, gender, address, age, fee, payment_duration,date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 
             [data.name, data.mobile, data.gender, data.adress, data.age, data.fee, data.paymentDuration, data.formattedDate]);
 
-        const [userId,extra]= await connection.execute('SELECT id FROM Clients WHERE mobile =?',[data.mobile])    
+        const [userId,extra]= await connection.execute('SELECT id FROM clients WHERE mobile = ?', [data.mobile])    
         connection.release();
-        console.log('Data inserted successfully',userId);
+        console.log('Data inserted successfully', userId);
         event.reply('data-saved', 'Data saved successfully');
-        event.reply('addingToPayments',userId)
+        event.reply('addingToPayments', userId);
     } catch (error) {
         console.error('Error inserting data:', error);
         event.reply('data-saved', 'Error saving data');
-        
+     
     }
 });
 
@@ -207,7 +254,7 @@ ipcMain.on('getCustomers', async(event) => {
 });
 
 
-ipcMain.on("billingInfo", async(event,dates)=>{
+ipcMain.on("billingInfo", async(event,dates) => {
     const month=dates.month
     const year=dates.year
     try{
@@ -216,14 +263,16 @@ ipcMain.on("billingInfo", async(event,dates)=>{
         const startDate = new Date(year, month - 1, 1); 
         const endDate = new Date(year, month, 0);
 
-        const[rows,fields]=  await connection.execute("SELECT * FROM Payments WHERE payment_date BETWEEN ? AND ? ",[startDate,endDate])
-        console.log(rows)
-        event.sender.send("billingResult",rows)
+        const[rows,fields] =  await connection.execute('SELECT * FROM payments WHERE payment_date BETWEEN ? AND ? ',[startDate,endDate]);
+        const[clientCount,extra]=  await connection.execute('SELECT COUNT(*) AS count FROM clients WHERE date BETWEEN ? AND ? ',[startDate,endDate]);
+        console.log(rows);
+        console.log(clientCount[0]);
+        event.sender.send("billingResult", rows, clientCount[0]);
     }
     catch(error){
         console.log(error)
         rows="No bills generated for the selected year/month"
-        event.sender.send("billingResult",rows)
+        event.sender.send("billingResult", rows);
     }
 
 })
