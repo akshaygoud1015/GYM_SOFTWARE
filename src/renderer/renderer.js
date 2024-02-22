@@ -7,6 +7,36 @@ const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
 const day = String(today.getDate()).padStart(2, '0');
 const formattedDate = `${year}-${month}-${day}`;
 
+function checkPassword(){
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    console.log(user);
+    console.log(pass);
+
+    api.checkLogin({user, pass});
+
+    api.onLogin((event, key) => {
+        if (key === 1) {
+            window.location.href = 'owner.html';
+        } else if (key === 2) {
+            window.location.href = 'trainer.html';
+        } else {
+            alert(key);
+        }
+    });
+}
+
+function changePassword(){
+    const user = document.getElementById('user').value;
+    const pass = document.getElementById('newPassword').value;
+
+    api.newPassword({user, pass});
+
+    api.onChangePassword((event, res) => {
+        alert(res);
+    });
+    document.getElementById('changePasswordForm').reset();
+}
 
 function addClient(){
 

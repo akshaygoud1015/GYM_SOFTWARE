@@ -34,4 +34,12 @@ CREATE TABLE payments (
     FOREIGN KEY (user_id) REFERENCES clients(id)
 );
 
+CREATE TABLE login (
+    username TEXT NOT NULL,
+    password TEXT NOT NULL
+);
+
+INSERT INTO login (username, password) VALUES ('owner', '123');
+INSERT INTO login (username, password) VALUES ('trainer', 'trainer123');
+
 npx electron main.js
