@@ -8,7 +8,7 @@ const { eventNames } = require('process');
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'admin',
+    password: 'Hari@0118',
     database: 'gymclient',
     connectionLimit: 10 // Adjust the connection limit as per your requirements
 });
@@ -88,6 +88,45 @@ ipcMain.on('insert-client', async (event, clientData) => {
         console.error('Error inserting data:', error);
         event.reply('data-saved', 'Error saving data');
      
+    }
+});
+
+ipcMain.on('insert-staff', async (event, staffData) => {
+    try {
+        const data = {
+            name: staffData.name || null,
+            mobile: staffData.mobile || null,
+            alternateMobile: staffData.alternateMobile || null,
+            age: staffData.age || null,
+            salary: staffData.salary || null,
+            dateOfJoining: staffData.dateOfJoining || null
+        };
+        
+        const connection = await pool.getConnection();
+        await connection.execute('INSERT INTO staff (name, phone_number, alternate_phone_number, age, salary, date_of_joining) VALUES (?, ?, ?, ?, ?, ?)', 
+            [data.name, data.mobile, data.alternateMobile, data.age, data.salary, data.dateOfJoining]);
+
+        connection.release();
+        
+        console.log('Staff Data inserted successfully');
+        event.reply('staffdata-saved', 'Staff Data saved successfully');
+    } catch (error) {
+        console.error('Error inserting staff data:', error);
+        event.reply('staffdata-saved', 'Error saving staff data');
+    }
+});
+// Assuming you have a database connection pool named 'pool'
+
+ipcMain.on('getStaff', async (event) => {
+    try {
+        const connection = await pool.getConnection();
+        const [rows, fields] = await connection.execute('SELECT * FROM staff'); // Assuming 'staff' is the name of your staff table
+        connection.release();
+        console.log(rows);
+        event.sender.send('staffListResult', rows);
+    } catch (error) {
+        console.error("Error fetching staff data:", error);
+        event.sender.send('staffListResult', []); // Send an empty array in case of error
     }
 });
 
