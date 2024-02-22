@@ -8,7 +8,7 @@ const { eventNames } = require('process');
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Hari@0118',
+    password: 'admin',
     database: 'gymclient',
     connectionLimit: 10 // Adjust the connection limit as per your requirements
 });
@@ -273,6 +273,38 @@ ipcMain.on("billingInfo", async(event,dates) => {
         console.log(error)
         rows="No bills generated for the selected year/month"
         event.sender.send("billingResult", rows);
+    }
+
+})
+
+
+ipcMain.on('addNewExpense',async(event,{expenseName,amount,enquired,date})=>{
+    try{
+        const connection= await pool.getConnection();
+        await connection.execute("INSERT INTO expenses (expense_name,amount,made_by,expense_date) values (?,?,?,?)",[expenseName,amount,enquired,date])
+        
+        console.log("added expense");
+        event.sender.send('updatedExpense',"added expense")
+    
+    }
+    catch(error){
+        console.log("error",error)
+    }
+
+})
+
+
+ipcMain.on('fetchExpenses',async(event)=>{
+    try{
+        const connection=await pool.getConnection();
+
+        const [rows,fields]= await connection.execute("SELECT * FROM Expenses");
+
+        event.sender.send('expensesQuery',rows)
+    }
+    catch(error){
+        rows="no Expenses Found"
+        event.sender.send('expensesQuery',rows)
     }
 
 })

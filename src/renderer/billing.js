@@ -7,7 +7,6 @@ document.getElementById("billing").addEventListener("submit", (event) => {
     getBillings(year, month);
 });
 
-
 function getBillings(year, month) {
     api.billingInfo({ year, month });
 
