@@ -89,8 +89,8 @@ contextBridge.exposeInMainWorld('api', {
     addedExpense:(callback)=>{
         ipcRenderer.on('updatedExpense',callback)
     },
-    fetchExpenses:()=>{
-        ipcRenderer.send('fetchExpenses')
+    getExpenses:(timeperiod)=>{
+        ipcRenderer.send('fetchingExpenses', timeperiod)
     },
     expenseResult:(callback)=>{
         ipcRenderer.on('expensesQuery',callback)

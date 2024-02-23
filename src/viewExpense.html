@@ -6,14 +6,44 @@
     <title>Document</title>
     <link rel="stylesheet" href="staff.css">
     <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
 </head>
 <body id="mainContent">
     <h1 class="text-center"> Expenses </h1>
+
+    <form id="expenses">
+        <div class="container mt-5">
+            <label for="start">From:</label>
+            <input type="text" id="start" class="form-control">
+            <label for="end">To:</label>
+            <input type="text" id="end" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
     
-    <div id="expensesContainer"></div> 
+    <div id="expensesContainer">
+                
+    </div>
+    <label>Total Expenses:</label>
+    <input type="number" id="totalExpenses" readonly>
 
     <a href="owner.html"> back</a>
 </body>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="./renderer/viewExpense.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script>
+    $('#start').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true
+      });
+      $('#end').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true
+      });
+</script>
 </html>

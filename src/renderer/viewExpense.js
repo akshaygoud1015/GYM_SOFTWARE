@@ -1,13 +1,17 @@
-document.addEventListener('DOMContentLoaded', () => {
-    
-    fetchExpenses();
+document.getElementById("expenses").addEventListener("submit", (event) => {
+    event.preventDefault(); // Prevent default form submission behavior
+    const from = document.getElementById("start").value;
+    const to = document.getElementById("end").value;
+    console.log(from, to);
+    fetchExpenses(from, to);
 });
 
 
-function fetchExpenses(){
-    api.fetchExpenses();
+function fetchExpenses(from, to){
+    api.getExpenses({from, to});
 
     api.expenseResult((event,rows)=>{
+        let sum = 0.00;
         const expensesContainer = document.getElementById('expensesContainer');
         if (rows == "no Expenses Found") {
             const message = document.createElement('p');
@@ -17,6 +21,7 @@ function fetchExpenses(){
             for (let i = 0; i < rows.length; i++) {
                 const expense = rows[i];
                 console.log(expense.expense_name);
+                sum+=parseInt(rows[i].amount);
 
                 const card = document.createElement('div');
                 card.classList.add('col-sm-5', 'md-4' ,);
@@ -54,13 +59,8 @@ function fetchExpenses(){
 
                 expensesContainer.appendChild(card);
             }
+            document.getElementById("totalExpenses").value = sum;
         }
-
-
-
-    })
-
-
-
-
+    });
+    document.getElementById('expensesContainer').innerHTML='';
 }
