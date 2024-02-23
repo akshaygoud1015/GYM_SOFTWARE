@@ -8,7 +8,7 @@ const { eventNames } = require('process');
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Hari@0118',
+    password: 'admin',
     database: 'gymclient',
     connectionLimit: 10 // Adjust the connection limit as per your requirements
 });
@@ -255,16 +255,14 @@ ipcMain.on('getCustomers', async(event) => {
 
 
 ipcMain.on("billingInfo", async(event,dates) => {
-    const month=dates.month
-    const year=dates.year
+    const fromDate = dates.from;
+    const toDate = dates.to;
     try{
         const connection = await pool.getConnection();
-        console.log(year,month)
-        const startDate = new Date(year, month - 1, 1); 
-        const endDate = new Date(year, month, 0);
 
-        const[rows,fields] =  await connection.execute('SELECT * FROM payments WHERE payment_date BETWEEN ? AND ? ',[startDate,endDate]);
-        const[clientCount,extra]=  await connection.execute('SELECT COUNT(*) AS count FROM clients WHERE date BETWEEN ? AND ? ',[startDate,endDate]);
+        
+        const[rows,fields] =  await connection.execute('SELECT * FROM payments WHERE payment_date BETWEEN ? AND ? ',[fromDate,toDate]);
+        const[clientCount,extra]=  await connection.execute('SELECT COUNT(*) AS count FROM clients WHERE date BETWEEN ? AND ? ',[fromDate,toDate]);
         console.log(rows);
         console.log(clientCount[0]);
         event.sender.send("billingResult", rows, clientCount[0]);

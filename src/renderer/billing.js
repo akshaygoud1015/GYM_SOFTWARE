@@ -1,15 +1,15 @@
 document.getElementById("billing").addEventListener("submit", (event) => {
     event.preventDefault(); // Prevent default form submission behavior
-    const year = document.getElementById("year").value;
-    const month = document.getElementById("month").value;
-    console.log(year, month);
+    const from = document.getElementById("from").value;
+    const to = document.getElementById("to").value;
+    console.log(from, to);
 
-    getBillings(year, month);
+    getBillings(from, to);
 });
 
 
-function getBillings(year, month) {
-    api.billingInfo({ year, month });
+function getBillings(from, to) {
+    api.billingInfo({ from, to });
 
     api.billingResults((event, rows, clientCount) => {
         let sum = 0.00;
