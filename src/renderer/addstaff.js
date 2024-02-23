@@ -22,7 +22,12 @@ function addStaff() {
   
     // Log the form data to check if it's retrieved correctly
     console.log("Form Data:", formData);
-}
+
+    
+    alert("added")
+
+    document.getElementById("staffForm").reset();
+  }
 
 // Listen for the response after saving staff data
 api.onStaffDataSaved((event, response) => {

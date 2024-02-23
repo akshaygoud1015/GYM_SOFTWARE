@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="addExpense.css">
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body id="mainContent">
+    <h1 class="text-center"> Expenses </h1>
+    <form id="expenseForm">
+        <label for="name">Expense Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+    
+        <label for="Amount">Amount</label><br>
+        <input type="number" id="amount" name="amount" required><br><br>
+
+
+        <label for="Amount">Expense Paid By</label><br>
+        <select class="form-select" id="madeBy" aria-label="Default select example">
+            <option selected>Select Person</option>
+            <option value="1">Owner</option>
+            <option value="2">Trainer</option>
+            </select>
+
+            <label for="date of Expense" class="mt-3">Date</label><br>
+            <input type="date" id="dateOfExpense" name="dateOfExpense"><br><br>    
+
+            <button type="submit"  class="btn btn-dark ">Submit</button>   
+
+        
+    
+    </form>
+    
+
+    <a href="owner.html"> back</a>
+</body>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./renderer/addExpense.js"></script>
+</html>

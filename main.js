@@ -275,6 +275,38 @@ ipcMain.on("billingInfo", async(event,dates) => {
 
 })
 
+
+ipcMain.on('addNewExpense',async(event,{expenseName,amount,enquired,date})=>{
+    try{
+        const connection= await pool.getConnection();
+        await connection.execute("INSERT INTO expenses (expense_name,amount,made_by,expense_date) values (?,?,?,?)",[expenseName,amount,enquired,date])
+        
+        console.log("added expense");
+        event.sender.send('updatedExpense',"added expense")
+    
+    }
+    catch(error){
+        console.log("error",error)
+    }
+
+})
+
+
+ipcMain.on('fetchExpenses',async(event)=>{
+    try{
+        const connection=await pool.getConnection();
+
+        const [rows,fields]= await connection.execute("SELECT * FROM Expenses");
+
+        event.sender.send('expensesQuery',rows)
+    }
+    catch(error){
+        rows="no Expenses Found"
+        event.sender.send('expensesQuery',rows)
+    }
+
+})
+
 function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 800,

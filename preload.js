@@ -82,5 +82,18 @@ contextBridge.exposeInMainWorld('api', {
     onChangePassword: (callback) => {
         ipcRenderer.on('onSetPassword', callback);
 
+    },
+    addNewExpense:(expenseData)=>{
+        ipcRenderer.send('addNewExpense',expenseData)
+    },
+    addedExpense:(callback)=>{
+        ipcRenderer.on('updatedExpense',callback)
+    },
+    fetchExpenses:()=>{
+        ipcRenderer.send('fetchExpenses')
+    },
+    expenseResult:(callback)=>{
+        ipcRenderer.on('expensesQuery',callback)
     }
+
 });

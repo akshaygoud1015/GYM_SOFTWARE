@@ -54,5 +54,14 @@ CREATE TABLE login (
 INSERT INTO login (username, password) VALUES ('owner', '123');
 INSERT INTO login (username, password) VALUES ('trainer', 'trainer123');
 
+
+CREATE TABLE expenses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    expense_name VARCHAR(255) NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    made_by VARCHAR(255) NOT NULL,
+    expense_date DATE NOT NULL
+);
+
 npx electron main.js
 
