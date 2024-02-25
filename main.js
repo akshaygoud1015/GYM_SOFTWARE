@@ -292,20 +292,23 @@ ipcMain.on('addNewExpense',async(event,{expenseName,amount,enquired,date})=>{
 })
 
 
-ipcMain.on('fetchExpenses',async(event)=>{
+ipcMain.on('fetchingExpenses',async(event, timeperiod)=>{
     try{
+        const startDate = timeperiod.from;
+        const endDate = timeperiod.to;
         const connection=await pool.getConnection();
 
-        const [rows,fields]= await connection.execute("SELECT * FROM Expenses");
+        const [rows,fields]= await connection.execute("SELECT * FROM expenses WHERE expense_date BETWEEN ? AND ?", [startDate, endDate]);
 
         event.sender.send('expensesQuery',rows)
     }
     catch(error){
         rows="no Expenses Found"
+        console.log(error);
         event.sender.send('expensesQuery',rows)
     }
 
-})
+});
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
