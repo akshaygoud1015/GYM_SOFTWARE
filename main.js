@@ -310,17 +310,34 @@ ipcMain.on('fetchingExpenses',async(event, timeperiod)=>{
 
 });
 
+
+ipcMain.on('getMonthlyExpenses',async(event)=>{
+
+    try{
+
+        const date =  new Date();
+        const connection = await pool.getConnection();
+        const[rows,fields]= await connection.execute("SELECT * FROM expenses WHERE MONTH(expense_date) = MONTH(CURDATE()) AND YEAR(expense_date) = YEAR(CURDATE())")
+        event.sender.send('expenseThisMonth',rows)
+
+    }
+    catch(error){
+        rows="no expenses"
+        event.sender.send('expenseThisMonth',rows)
+    }
+
+});
+
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        fullscreen: true,
         webPreferences: {
             nodeIntegration: true,
             preload: path.join(__dirname,'preload.js') // Adjust the path if needed
         }
     });
 
-    mainWindow.loadFile(path.join(__dirname,'src', 'index.html'));
+    mainWindow.loadFile(path.join(__dirname,'src',  'index.html'));
 }
 
 app.whenReady().then(createWindow);

@@ -94,6 +94,12 @@ contextBridge.exposeInMainWorld('api', {
     },
     expenseResult:(callback)=>{
         ipcRenderer.on('expensesQuery',callback)
+    },
+    getMonthlyExpenses:()=>{
+        ipcRenderer.send('getMonthlyExpenses')
+    },
+    thisMonthExpenses:(callback)=>{
+        ipcRenderer.on('expenseThisMonth',callback)
     }
 
 });
