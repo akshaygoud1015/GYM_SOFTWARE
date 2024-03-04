@@ -1,7 +1,8 @@
 
 body{
-	background-color: rgb(51, 50, 50);
-	color: aliceblue;
+	background-color: rgb(130, 130, 128);  
+	color: rgb(0, 0, 0);
+	font-weight: bolder;
 }
 
 .butt{

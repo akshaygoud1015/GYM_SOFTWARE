@@ -1,8 +1,12 @@
 .dd{
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .card{
     margin-left: 20px;
+}
+
+body{
+    background-color: rgb(130, 130, 128);  
 }

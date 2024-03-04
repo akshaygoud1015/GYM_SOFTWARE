@@ -200,7 +200,7 @@ ipcMain.on('searchForDues', async(event) => {
         const params = [currentDate,threeDaysAgo];
         const [rows] = await connection.execute(query, params);
         connection.release();
-        console.log(threeDaysAgo)
+        console.log(rows)
 
         event.sender.send('duesResult',rows)
     }

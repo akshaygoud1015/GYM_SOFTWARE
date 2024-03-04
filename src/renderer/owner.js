@@ -12,7 +12,7 @@ function fetchOverDues() {
     api.userOverDue((event, data) => {
         const duesContainer = document.getElementById('duesContainer');
 
-        if (data == "no dues") {
+        if (data == "no dues" || data.length==0) {
             console.log("no dues");
             // Display a message indicating no upcoming dues
             const message = document.createElement('p');

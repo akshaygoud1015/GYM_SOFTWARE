@@ -6,3 +6,7 @@ body{
 .expense{
     margin-left: 34%;
 }
+
+a :hover{
+    color: aliceblue;
+}
