@@ -13,7 +13,7 @@
             <h1 id="title" class="text-center">Add a Client</h1>
         </header>
         <div class="form-wrap">	
-            <form id="survey-form" onsubmit="addClient()">
+            <form id="survey-form" ">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -26,6 +26,18 @@
                             <label id="email-label" for="email">Mobile</label>
                             <input type="number" name="number" id="number" placeholder="Enter number" class="form-control" required>
                         </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label id="picture" for="email">Picture</label>
+                            <video id="cameraFeed" autoplay></video>
+                            
+                            <button id="captureButton">Capture Image</button>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 prev" id="previewContainer">
+                        <img id="imagePreview" src="#" alt="Image Preview">
                     </div>
                     <div class="gender">
                     <div class="form-check ">
@@ -114,6 +126,43 @@
         // Load CSS file dynamically
         loadCSS('single.css');
     </script>
+
+<script>
+    const videoElement = document.getElementById('cameraFeed');
+    const captureButton = document.getElementById('captureButton');
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            videoElement.srcObject = stream;
+        })
+        .catch(error => {
+            console.error('Error accessing camera:', error);
+        });
+
+    captureButton.addEventListener('click', (event) => {
+            event.preventDefault();
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    canvas.width = videoElement.videoWidth;
+    canvas.height = videoElement.videoHeight;
+    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+    const imageData = canvas.toDataURL('image/jpeg');
+    console.log('Captured image:', imageData);
+
+    // Display preview of captured image
+    const imagePreview = document.createElement('img');
+    imagePreview.src = imageData;
+    imagePreview.width = 200; // Adjust size as needed
+    imagePreview.height = 150; // Adjust size as needed
+
+    // Append the image preview next to the camera feed
+    const container = document.getElementById('previewContainer');
+    container.innerHTML = ''; // Clear previous preview
+    container.appendChild(imagePreview);
+});
+</script>
 </body>
 
 </html>

@@ -38,37 +38,90 @@ function changePassword(){
     document.getElementById('changePasswordForm').reset();
 }
 
-function addClient(){
+async function saveImageAndSubmitForm(name, mobile, gender, address, age, fee, paymentDuration, fileName, canvas) {
+    return new Promise((resolve, reject) => {
+        // Convert canvas image to blob
+        canvas.toBlob(async (blob) => {
+            // Create a formData object to send image data
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('mobile', mobile);
+            formData.append('gender', gender);           // ee convert function lepesthe complex aithundii, anduke ilage odilesaaa
+            formData.append('address', address);
+            formData.append('age', age);
+            formData.append('fee', fee);
+            formData.append('paymentDuration', paymentDuration);
+            formData.append('fileName', fileName);
+            formData.append('image', blob, fileName);
+
+            try {
+                // Send image data to the server
+                await api.sendInsertClient({name,mobile,gender,address,age,fee,paymentDuration,fileName});
+
+                api.addingToPaymentsDb((event,response)=>{
+                    const userId = (response[0].id)
+                    const amount= fee
+                    const payType=paymentDuration
+
+                    api.makePayment({userId,amount,payType})
+
+                })
+
+                // Image saved successfully, resolve the promise
+                resolve();
+            } catch (error) {
+                // Error occurred while saving the image, reject the promise
+                reject(error);
+            }
+        }, 'image/jpeg');
+    });
+}
+
+document.getElementById("survey-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
 
     // Retrieve form data
     const name = document.getElementById('name').value;
     const mobile = document.getElementById('number').value;
     const gender = document.querySelector('input[name="flexRadioDefault"]:checked').value;
-    const adress = document.getElementById('adress').value;
+    const address = document.getElementById('adress').value;
     const age = document.getElementById('age').value;
     const fee = document.getElementById('fee').value;
     const paymentDuration = document.getElementById('dropdown').value;
-  
-   
 
-    api.sendInsertClient({ name, mobile, gender, adress, age, fee, paymentDuration, formattedDate});
+    // Capture the image data
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const videoElement = document.getElementById('cameraFeed');
 
-    
+    canvas.width = videoElement.videoWidth;
+    canvas.height = videoElement.videoHeight;
+    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
 
-    // Listen for confirmation from the main process
-    api.onDataSaved((event, response) => {
-        console.log('Response received after saving data:', response);
-       });
+    const fileName = `${name}_${Date.now()}.jpg`; // Example: John_Doe_1644172843098.jpg
 
-    api.paymentUpdate((event,response)=>{
-        userId=response[0].id;
-        payType=paymentDuration;
-        amount=fee;
-        api.makePayment({ payType,userId,amount });
+    try {
+        // Save the image
+        const imageData = canvas.toDataURL('image/jpeg');
+        const downloadLink = document.createElement('a');
+        downloadLink.href = imageData;
+        downloadLink.download = fileName;
+        downloadLink.click();
 
-    })   
-    alert("Submitted!")     
-}
+        // Submit the form
+        await saveImageAndSubmitForm(name, mobile, gender, address, age, fee, paymentDuration, fileName, canvas);
+
+        // Image saved and form submitted successfully
+        // Add any additional logic here if needed
+
+        alert("Submitted!");
+    } catch (error) {
+        // Error occurred while saving the image or submitting the form
+        console.error("Error:", error);
+        alert("An error occurred. Please try again.");
+    }
+});
+
 
 
 function searchUser(){

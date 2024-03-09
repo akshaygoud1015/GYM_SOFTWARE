@@ -1,4 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron');
+contextBridge.exposeInMainWorld('fs', require('fs'));
 
 contextBridge.exposeInMainWorld('api', {
     sendInsertClient: (clientData) => {
@@ -100,6 +101,9 @@ contextBridge.exposeInMainWorld('api', {
     },
     thisMonthExpenses:(callback)=>{
         ipcRenderer.on('expenseThisMonth',callback)
+    },
+    addingToPaymentsDb:(callback)=>{
+        ipcRenderer.on('addingToPayments',callback)
     }
 
 });
