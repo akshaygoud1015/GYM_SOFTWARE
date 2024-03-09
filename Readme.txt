@@ -4,7 +4,7 @@
 2. npm install --save-dev electron
 3. npm install bootstrap@5.3.2
 4. npm install sqlite3
-
+5. npm install pako
 
 
 TABLE:|
@@ -25,6 +25,9 @@ ADD COLUMN date DATE;
 ALTER TABLE clients
 ADD COLUMN last_payment DATE,
 ADD COLUMN validity DATE;
+
+ALTER TABLE clients
+ADD COLUMN image_data TEXT; 
 
 CREATE TABLE payments (
     user_id INT NOT NULL,

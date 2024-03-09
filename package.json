@@ -14,8 +14,10 @@
   "dependencies": {
     "bootstrap": "^5.3.2",
     "i": "^0.3.7",
+    "lz-string": "^1.5.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.9.1",
+    "pako": "^2.1.0",
     "sqlite3": "^5.1.7"
   }
 }

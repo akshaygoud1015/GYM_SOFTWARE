@@ -62,7 +62,7 @@ ipcMain.on('setPassword', async (event, newCredentials) => {
 ipcMain.on('insert-client', async (event, clientData) => {
     try {
         // Replace undefined values with null
-        
+        console.log("Data",clientData)
         const data = {
             name: clientData.name || null,
             mobile: clientData.mobile || null,
@@ -71,19 +71,21 @@ ipcMain.on('insert-client', async (event, clientData) => {
             age: clientData.age || null,
             fee: clientData.fee || null,
             paymentDuration: clientData.paymentDuration || null,
-            formattedDate: clientData.formattedDate || null
+            formattedDate: clientData.formattedDate || null,
+            fileName:clientData.fileName|| null,
         };
+
+        console.log("fname",data.fileName)
         
 
         const connection = await pool.getConnection();
-        await connection.execute('INSERT INTO clients (name, mobile, gender, address, age, fee, payment_duration,date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 
-            [data.name, data.mobile, data.gender, data.adress, data.age, data.fee, data.paymentDuration, data.formattedDate]);
+        await connection.execute('INSERT INTO clients (name, mobile, gender, address, age, fee, payment_duration,date,image_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+            [data.name, data.mobile, data.gender, data.adress, data.age, data.fee, data.paymentDuration, data.formattedDate, data.fileName]);
 
         const [userId,extra]= await connection.execute('SELECT id FROM clients WHERE mobile = ?', [data.mobile])    
         connection.release();
         console.log('Data inserted successfully', userId);
-        event.reply('data-saved', 'Data saved successfully');
-        event.reply('addingToPayments', userId);
+        event.sender.send('addingToPayments', userId);
     } catch (error) {
         console.error('Error inserting data:', error);
         event.reply('data-saved', 'Error saving data');
@@ -333,6 +335,7 @@ function createWindow() {
         fullscreen: true,
         webPreferences: {
             nodeIntegration: true,
+            allowMediaPermissions: true,
             preload: path.join(__dirname,'preload.js') // Adjust the path if needed
         }
     });
